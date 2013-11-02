@@ -4,5 +4,5 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'rake'
-gem 'capistrano', '> 2.0.0'
-gem 'railties', '> 3.2.0'
+gem 'capistrano', '~> 2'
+gem 'railties', '~> 3.2.0'

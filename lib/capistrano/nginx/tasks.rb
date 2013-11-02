@@ -7,16 +7,28 @@ Capistrano::Configuration.instance.load do
         config_file = File.join(File.dirname(__FILE__), "../../generators/capistrano/nginx/templates/_nginx_conf.erb")
       end
       config = ERB.new(File.read(config_file)).result(binding)
-      set :user, sudo_user
       put config, "/tmp/#{application}"
-      run "#{sudo} mv /tmp/#{application} /etc/nginx/sites-available/#{application}"
-      run "#{sudo} ln -fs /etc/nginx/sites-available/#{application} /etc/nginx/sites-enabled/#{application}"
+      invoke_command "mv /tmp/#{application} /etc/nginx/sites-available/#{application}", :via => :sudo
+      nginx.enable_site
     end
 
-    desc "Reload nginx configuration"
-    task :reload, :role => :web do
-      set :user, sudo_user
-      run "#{sudo} /etc/init.d/nginx reload"
+    [:stop, :start, :restart, :reload].each do |action|
+      desc "#{action.to_s.capitalize} nginx"
+      task action, :roles => :web do
+        invoke_command "service nginx #{action.to_s}", :via => :sudo
+      end
+    end
+
+    desc 'Enable nginx site'
+    task :enable_site do
+      invoke_command "ln -sf /etc/nginx/sites-available/#{application}.conf /etc/nginx/sites-enabled/#{application}.conf", :via => :sudo
+      nginx.reload
+    end
+
+    desc 'Disable nginx site'
+    task :disable_site do
+      invoke_command "unlink /etc/nginx/sites-enabled/#{application}.conf", :via => :sudo
+      nginx.reload
     end
   end
 end

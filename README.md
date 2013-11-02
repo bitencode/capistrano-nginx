@@ -32,7 +32,6 @@ Make sure, following variables are defined in your `config/deploy.rb`:
 * `application` - application name
 * `server_name` - your application's server_name in nginx (e.g. `example.com`)
 * `deploy_to` - deployment path
-* `sudo_user` - user name with sudo privileges (needed to config/restart nginx)
 * `app_port` - application port (optional)
 
 Launch new tasks:
