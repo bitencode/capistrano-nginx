@@ -8,7 +8,7 @@ namespace :nginx do
           set :nginx_path, "/etc/nginx"
           set :nginx_upstream, -> { fetch(:application) }
           set :nginx_server_name, -> { fetch(:application) }
-          set :nginx_template, "config/deploy/nginx_conf.erb"
+          set :nginx_template, "config/deploy/templates/nginx_conf.erb"
           set :nginx_site_name, -> { fetch(:application) }
     DESC
   task :setup do
@@ -62,7 +62,7 @@ namespace :load do
     set :nginx_path, "/etc/nginx"
     set :nginx_upstream, -> { fetch(:application) }
     set :nginx_server_name, -> { fetch(:application) }
-    set :nginx_template, "config/deploy/nginx_conf.erb"
+    set :nginx_template, "config/deploy/templates/nginx_conf.erb"
     set :nginx_site_name, -> { fetch(:aplication) }
   end
 end
